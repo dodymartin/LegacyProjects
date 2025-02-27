@@ -167,6 +167,11 @@
   <ItemGroup>
     <Resource Include="Images\Icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PackageDeliveryNew2\PackageDeliveryNew2.csproj">
+      <Project>{234c63db-9878-4825-917c-6b9537d9ffb4}</Project>
+      <Name>PackageDeliveryNew2</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
