@@ -7,9 +7,11 @@ namespace PackageDelivery
     {
         public App()
         {
-            var connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=PackageDelivery;Trusted_Connection=true;";
-            DBHelper.Init(connectionString);
-            Settings.Init(connectionString);
+            var legacyDatabaseConnectionString = @"Server=(localdb)\MSSQLLocalDB;Database=PackageDelivery;Trusted_Connection=true;";
+            var bubbleDatabaseConnectionString = @"Server=(localdb)\MSSQLLocalDB;Database=PackageDeliveryNew;Trusted_Connection=true;";
+
+            DBHelper.Init(legacyDatabaseConnectionString);
+            Settings.Init(bubbleDatabaseConnectionString);
         }
     }
 }

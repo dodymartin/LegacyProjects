@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PackageDeliveryNew2.Common
+namespace PackageDeliveryNew.Common
 {
     public class Result
     {

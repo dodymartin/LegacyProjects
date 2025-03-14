@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using PackageDeliveryNew.Common;
-using PackageDeliveryNew2.Common;
 
 namespace PackageDeliveryNew.Deliveries
 {
@@ -11,26 +9,42 @@ namespace PackageDeliveryNew.Deliveries
         private const double PricePerMilePerPound = 0.04;
         private const double BasePrice = 20;
 
-        public Address Address { get; }
+        public Address Destination { get; }
+        public decimal? CostEstimate { get; private set; }
+        private readonly List<ProductLine> _productLines;
+        public IReadOnlyList<ProductLine> ProductLines => _productLines.ToList();
 
-        public Delivery(int id, Address address)
+        public Delivery(int id, Address destination, decimal? costEstimate, IReadOnlyList<ProductLine> productLines)
             : base(id)
         {
             Contracts.Require(id >= 0);
-            Contract.Requires(address != null);
+            Contracts.Require(destination != null);
+            Contracts.Require(productLines != null);
 
-            Address = address;
+            Destination = destination;
+            CostEstimate = costEstimate;
+            _productLines = productLines.ToList();
         }
 
-        public decimal GetEstimate(double distanceInMiles, List<ProductLine> productLines)
+        public void RecalculateCostEstimate(double distanceInMiles)
         {
             Contracts.Require(distanceInMiles >= 0, "Invalid distance");
-            Contracts.Require(productLines?.Count > 0 && productLines?.Count <= 4, "Invalid product line count");
+            Contracts.Require(ProductLines?.Count > 0, "Need at least one product line");
 
-            var totalWeightInPounds = productLines.Sum(x => x.Product.WeightInPounds * x.Amount);
+            var totalWeightInPounds = ProductLines.Sum(x => x.Product.WeightInPounds * x.Amount);
             var estimate = totalWeightInPounds * distanceInMiles * PricePerMilePerPound + BasePrice;
 
-            return decimal.Round((decimal)estimate, 2);
+            CostEstimate = decimal.Round((decimal)estimate, 2);
+        }
+
+        public void DeleteLine(ProductLine line)
+        {
+            _productLines.Remove(line);
+        }
+
+        public void AddProduct(Product product, int amount)
+        {
+            _productLines.Add(new ProductLine(product, amount));
         }
     }
 }

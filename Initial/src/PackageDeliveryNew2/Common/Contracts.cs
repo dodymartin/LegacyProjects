@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace PackageDeliveryNew2.Common
+namespace PackageDeliveryNew.Common
 {
     public static class Contracts
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PackageDeliveryNew.Acl;
-using PackageDeliveryNew2.Common;
+﻿using PackageDeliveryNew.Common;
 
 namespace PackageDeliveryNew.Deliveries
 {
@@ -27,31 +23,32 @@ namespace PackageDeliveryNew.Deliveries
                                  int? product_id4,
                                  int amount4)
         {
-            if (productId1 is null && productId2 is null && productId3 is null && product_id4 is null)
-                return Result.Fail<decimal>("At least one product must be provided");
+            //if (productId1 is null && productId2 is null && productId3 is null && product_id4 is null)
+            //    return Result.Fail<decimal>("At least one product must be provided");
 
-            Delivery delivery = _deliveryRepository.GetById(deliveryId)
-                ?? throw new Exception("Invalid delivery");
+            //Delivery delivery = _deliveryRepository.GetById(deliveryId)
+            //    ?? throw new Exception("Invalid delivery");
 
-            double? distance = _addressResolver.GetDistanceTo(delivery.Address);
-            if (distance is null)
-                return Result.Fail<decimal>("Invalid address");
+            //double? distance = _addressResolver.GetDistanceTo(delivery.Destination);
+            //if (distance is null)
+            //    return Result.Fail<decimal>("Invalid address");
 
-            var productLines = new List<(int? productId, int amount)>
-            {
-                (productId1, amount1),
-                (productId2, amount2),
-                (productId3, amount3),
-                (product_id4, amount4)
-            }
-            .Where(x => x.productId != null)
-            .Select(x => new ProductLine(_productRepository.GetById(x.productId.Value), x.amount))
-            .ToList();
+            //var productLines = new List<(int? productId, int amount)>
+            //{
+            //    (productId1, amount1),
+            //    (productId2, amount2),
+            //    (productId3, amount3),
+            //    (product_id4, amount4)
+            //}
+            //.Where(x => x.productId != null)
+            //.Select(x => new ProductLine(_productRepository.GetById(x.productId.Value), x.amount))
+            //.ToList();
 
-            if (productLines.Any(x => x.Product == null))
-                throw new Exception("Invalid product");
+            //if (productLines.Any(x => x.Product == null))
+            //    throw new Exception("Invalid product");
 
-            return Result.Ok(delivery.GetEstimate(distance.Value, productLines));
+            //return Result.Ok(delivery.GetEstimate(distance.Value, productLines));
+            return Result.Ok(0m);
         }
     }
 

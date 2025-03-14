@@ -1,52 +1,52 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Linq;
-using Dapper;
-using PackageDeliveryNew.Deliveries;
-using PackageDeliveryNew.Utils;
+﻿//using System;
+//using System.Data.SqlClient;
+//using System.Linq;
+//using Dapper;
+//using PackageDeliveryNew.Deliveries;
+//using PackageDeliveryNew.Utils;
 
-namespace PackageDeliveryNew.Acl
-{
-    public class ProductRepository
-    {
-        private const double PoundsInKilogram = 2.20462;
-        public Product GetById(int id)
-        {
-            ProductLegacy legacyProduct = GetLegacyProduct(id);
-            Product product = MapLegacyProduct(legacyProduct);
+//namespace PackageDeliveryNew.Acl
+//{
+//    public class ProductRepository
+//    {
+//        private const double PoundsInKilogram = 2.20462;
+//        public Product GetById(int id)
+//        {
+//            ProductLegacy legacyProduct = GetLegacyProduct(id);
+//            Product product = MapLegacyProduct(legacyProduct);
 
-            return product;
-        }
+//            return product;
+//        }
 
-        private Product MapLegacyProduct(ProductLegacy legacyProduct)
-        {
-            if (legacyProduct.WT is null && legacyProduct.WT_KG is null)
-                throw new Exception("Invalid weight in product: " + legacyProduct.NMB_CM);
+//        private Product MapLegacyProduct(ProductLegacy legacyProduct)
+//        {
+//            if (legacyProduct.WT is null && legacyProduct.WT_KG is null)
+//                throw new Exception("Invalid weight in product: " + legacyProduct.NMB_CM);
 
-            double weightInPounds = (double)(legacyProduct.WT ?? legacyProduct.WT_KG * PoundsInKilogram);
-            return new Product(legacyProduct.NMB_CM, weightInPounds);
-        }
+//            double weightInPounds = (double)(legacyProduct.WT ?? legacyProduct.WT_KG * PoundsInKilogram);
+//            return new Product(legacyProduct.NMB_CM, weightInPounds);
+//        }
 
-        private ProductLegacy GetLegacyProduct(int id)
-        {
-            using (var connection = new SqlConnection(Settings.ConnectionString))
-            {
-                var query = @"
-                SELECT NMB_CM, WT, WT_KG
-                FROM [dbo].[PRD_TBL]
-                WHERE
-                    NMB_CM = @ID";
-                return connection
-                    .Query<ProductLegacy>(query, new { ID = id })
-                    .SingleOrDefault();
-            }
-        }
+//        private ProductLegacy GetLegacyProduct(int id)
+//        {
+//            using (var connection = new SqlConnection(Settings.ConnectionString))
+//            {
+//                var query = @"
+//                SELECT NMB_CM, WT, WT_KG
+//                FROM [dbo].[PRD_TBL]
+//                WHERE
+//                    NMB_CM = @ID";
+//                return connection
+//                    .Query<ProductLegacy>(query, new { ID = id })
+//                    .SingleOrDefault();
+//            }
+//        }
 
-        private class ProductLegacy
-        {
-            public int NMB_CM { get; set; }
-            public double? WT { get; set; }
-            public double? WT_KG { get; set; }
-        }
-    }
-}
+//        private class ProductLegacy
+//        {
+//            public int NMB_CM { get; set; }
+//            public double? WT { get; set; }
+//            public double? WT_KG { get; set; }
+//        }
+//    }
+//}
